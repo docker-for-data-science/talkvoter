@@ -1,0 +1,46 @@
+version: '3.4'
+services:
+
+   db:
+     image: postgres:10
+     ports:
+       - "5432"
+     networks:
+       - docker4data_net
+     healthcheck:
+       test: ["CMD", "pg_isready", "-U", "postgres"]
+       start_period: 5s
+       interval: 30s
+       timeout: 10s
+       retries: 3
+
+   app:
+     image: docker4data/docker4data:prod-1.0.1
+     build:
+       context: .
+       dockerfile: Dockerfile
+     command: /app/docker-utils/run.sh
+     volumes:
+       - .:/app/proj/
+       - static-volume:/app/htdocs/static/
+     ports:
+       - "8000:8000"
+     environment:
+       - DATABASE_URL=postgres://postgres@db/postgres
+       - SITE_DIR=/app/
+     networks:
+       - docker4data_net
+     depends_on:
+       - db
+     healthcheck:
+       test: ["CMD", "curl", "localhost", "8000"]
+       start_period: 5s
+       interval: 30s
+       timeout: 10s
+       retries: 3
+
+networks:
+  docker4data_net:
+
+volumes:
+  static-volume:
