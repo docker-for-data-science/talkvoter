@@ -9,7 +9,7 @@ class QueryHistory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String)
     result = db.Column(db.String)
-    processed = db.Column(db.Boolean)
+    processed = db.Column(db.Boolean, default=False)
 
     date_created = db.Column(
         db.DateTime, default=db.func.current_timestamp())
