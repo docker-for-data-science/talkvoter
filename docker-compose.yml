@@ -2,11 +2,13 @@ version: '3.4'
 services:
 
    db:
-     image: postgres:10
+     image: postgres:10-alpine
      ports:
        - "5432"
      networks:
        - docker4data_net
+     volumes:
+       - pgdata:/var/lib/postgresql/data/
      healthcheck:
        test: ["CMD", "pg_isready", "-U", "postgres"]
        start_period: 5s
@@ -44,3 +46,4 @@ networks:
 
 volumes:
   static-volume:
+  pgdata:

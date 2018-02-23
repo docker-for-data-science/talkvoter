@@ -12,7 +12,7 @@ db.create_all(app=application)
 
 
 @application.route("/")
-def hello():
+def index():
     name = "Python"
     return render_template('index.html', name=name)
 
