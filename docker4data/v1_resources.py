@@ -23,7 +23,7 @@ class LookupResource(Resource):
             valid_data = err.valid_data
         db.session.add(obj.data)
         db.session.commit()
-        return schema.dump(obj)
+        return schema.dump(obj.data)
 
 
 api.add_resource(LookupResource, '/lookup/')
