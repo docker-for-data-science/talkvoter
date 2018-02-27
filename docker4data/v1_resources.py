@@ -10,6 +10,10 @@ api = Api(api_bp)
 
 
 class LookupResource(Resource):
+
+    def post(self):
+        return self.get()
+
     def get(self):
 
         schema = QueryHistorySchema()
