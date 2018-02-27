@@ -13,4 +13,5 @@ uwsgi --chdir ${SITE_DIR}proj/ \
     --processes 2 \
     --${CONNECT_METHOD:=http} 0.0.0.0:8000 \
     --static-map /static=${SITE_DIR}htdocs/static/ \
-    --python-autoreload=1
+    --python-autoreload=1 \
+    --honour-stdin

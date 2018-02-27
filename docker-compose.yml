@@ -34,6 +34,8 @@ services:
        - docker4data_net
      depends_on:
        - db
+     stdin_open: true
+     tty: true
      healthcheck:
        test: ["CMD", "curl", "localhost", "8000"]
        start_period: 5s
