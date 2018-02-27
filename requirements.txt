@@ -5,4 +5,5 @@ marshmallow==2.15.0
 marshmallow-sqlalchemy==0.13.2
 psycopg2-binary==2.7.4
 SQLAlchemy==1.2.4
+toastedmarshmallow
 webargs==2.0.0
