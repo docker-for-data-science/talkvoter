@@ -1,20 +1,10 @@
 from marshmallow_sqlalchemy import ModelSchema
-from marshmallow import Schema, fields, pprint
 import toastedmarshmallow
-from .models import QueryHistory
+from .models import Vote
 
 
-class QueryHistorySchema(ModelSchema):
+class VoteSchema(ModelSchema):
     class Meta:
         jit = toastedmarshmallow.Jit
-        model = QueryHistory
-        fields = ['name']
-
-
-# class QueryHistorySchema(Schema):
-#
-#     title = fields.Str()
-#
-#     class Meta:
-#         jit = toastedmarshmallow.Jit
-#     name = fields.Str()
+        model = Vote
+        fields = ['value']
