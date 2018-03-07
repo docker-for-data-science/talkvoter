@@ -6,7 +6,7 @@ services:
      ports:
        - "5432"
      networks:
-       - docker4data_net
+       - talkvoter_net
      volumes:
        - pgdata:/var/lib/postgresql/data/
      healthcheck:
@@ -17,7 +17,7 @@ services:
        retries: 3
 
    app:
-     image: docker4data/docker4data:prod-1.0.1
+     image: docker4data/talkvoter:prod-1.0.1
      build:
        context: .
        dockerfile: Dockerfile
@@ -31,7 +31,7 @@ services:
        - DATABASE_URL=postgres://postgres@db/postgres
        - SITE_DIR=/app/
      networks:
-       - docker4data_net
+       - talkvoter_net
      depends_on:
        - db
      stdin_open: true
@@ -44,7 +44,7 @@ services:
        retries: 3
 
 networks:
-  docker4data_net:
+  talkvoter_net:
 
 volumes:
   static-volume:

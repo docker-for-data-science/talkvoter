@@ -4,7 +4,7 @@ from .v1_resources import api_bp
 
 
 application = Flask(__name__)
-application.config.from_object('docker4data.settings')
+application.config.from_object('talkvoter.settings')
 
 # initialize and create the database
 db.init_app(application)

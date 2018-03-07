@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "Starting uWSGI"
-PROJECT_NAME="docker4data"
+PROJECT_NAME="talkvoter"
 
 
 uwsgi --chdir ${SITE_DIR}proj/ \
