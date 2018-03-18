@@ -7,3 +7,5 @@ psycopg2-binary==2.7.4
 SQLAlchemy==1.2.4
 toastedmarshmallow
 webargs==2.0.0
+pytest
+flake8
