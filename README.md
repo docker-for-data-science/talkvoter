@@ -4,7 +4,7 @@
 
 - [ ] Need better name
 - [x] Add MakeFile
-- [ ] Add API and DB documentation
+- [x] Add API and DB documentation
 - [ ] Create Backend
 - [ ] Create Frontend
 
