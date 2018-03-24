@@ -4,6 +4,7 @@ help:
 	@echo 'Usage:                                                       '
 	@echo ' make build      build images                                '
 	@echo ' make up         creates containers and starts service       '
+	@echo ' make iup        creates containers and runs interactively   '
 	@echo ' make start      starts service containers                   '
 	@echo ' make stop       stops service containers                    '
 	@echo ' make down       stops service and removes containers        '
@@ -25,6 +26,10 @@ build:
 
 up:
 	docker-compose up -d app db
+
+iup:
+	# build and run interactively
+	docker-compose up --build
 
 start:
 	docker-compose start app db

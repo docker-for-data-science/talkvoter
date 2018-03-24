@@ -8,3 +8,10 @@ class VoteSchema(ModelSchema):
         jit = toastedmarshmallow.Jit
         model = Vote
         fields = ['value']
+
+
+class TalkSchema(ModelSchema):
+    class Meta:
+        jit = toastedmarshmallow.Jit
+        model = Vote
+        fields = ['id', 'title', 'description', 'presenters']

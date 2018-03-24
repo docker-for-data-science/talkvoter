@@ -1,4 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import relationship
 
 db = SQLAlchemy()
 
@@ -10,7 +11,7 @@ class Talk(db.Model):
 
     title = db.Column(db.String)
     description = db.Column(db.String)
-    authors = db.Column(db.String)
+    presenters = db.Column(db.String)
 
     date_created = db.Column(
         db.DateTime, default=db.func.current_timestamp())
@@ -29,6 +30,8 @@ class Vote(db.Model):
     __tablename__ = 'vote'
 
     id = db.Column(db.Integer, primary_key=True)
+    talk_id = db.Column(db.Integer, db.ForeignKey('talk.id'))
+    talk = relationship("Talk", backref="votes")
     value = db.Column(db.String)
     processed = db.Column(db.Boolean, default=False)
 

@@ -6,7 +6,7 @@ Need to figure out
 
 ## Talks
 
-### **GET** `/api/v1/talks`
+### **GET** `/api/v1/talks/`
 
 Returns paginated list of talks
 
@@ -38,7 +38,7 @@ Returns paginated list of talks
 }
 ```
 
-### **GET** `/api/v1/talks/<talk_id:int>`
+### **GET** `/api/v1/talks/<talk_id:int>/`
 
 Returns single talk details
 
@@ -63,7 +63,7 @@ Returns single talk details
 }
 ```
 
-### **GET** `/api/v1/talks/random`
+### **GET** `/api/v1/talks/random/`
 
 Returns random talk that user has not voted on
 
@@ -81,7 +81,7 @@ Returns random talk that user has not voted on
 }
 ```
 
-### **POST** `/api/v1/talks/<talk_id:int>/vote`
+### **POST** `/api/v1/talks/<talk_id:int>/vote/`
 
 Cast vote for `talk_id`
 

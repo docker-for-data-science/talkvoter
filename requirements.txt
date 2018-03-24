@@ -1,11 +1,12 @@
 Flask==0.12.2
+Flask-Admin==1.5.1
 Flask_SQLAlchemy==2.3.2
 Flask_RESTful==0.3.6
 marshmallow==2.15.0
 marshmallow-sqlalchemy==0.13.2
 psycopg2-binary==2.7.4
 SQLAlchemy==1.2.4
-toastedmarshmallow
+toastedmarshmallow==0.2.6
 webargs==2.0.0
 pytest
 flake8

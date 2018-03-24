@@ -30,6 +30,7 @@ services:
      environment:
        - DATABASE_URL=postgres://postgres@db/postgres
        - SITE_DIR=/app/
+       - SECRET_KEY=super secret key
      networks:
        - talkvoter_net
      depends_on:
