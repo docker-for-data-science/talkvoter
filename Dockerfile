@@ -26,11 +26,12 @@ RUN install -g app -o app -d proj/ htdocs/ htdocs/static/
 RUN find ${SITE_DIR} -type d -exec chmod g+s {} \;
 RUN chmod -R g+w ${SITE_DIR}
 
+# upgrade pip
+RUN pip install pip==9.0.3
+
 # from here on, run everything as the "app" user
 USER app
 
-# upgrade pip
-RUN pip install --user pip --upgrade
 RUN pip install --user uwsgi
 
 COPY requirements.txt requirements.txt
