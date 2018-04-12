@@ -15,34 +15,40 @@ application.config.from_object(Config)
 db.init_app(application)
 db.create_all(app=application)
 
-
+# Register models with the Admin
 admin = Admin(application, name='flask4data', template_mode='bootstrap3')
 admin.add_view(ModelView(User, db.session))
 admin.add_view(ModelView(Talk, db.session))
 admin.add_view(ModelView(Vote, db.session))
 
+# Instantiate the Flask Login manager
 login = LoginManager(application)
 login.login_view = 'login'
 
 
+# Define function to map id to user for Flask Login
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
 
 
+# Create a custome 404 page
 @application.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
 
 
+# register the auth views
 application.add_url_rule(r'/login/', view_func=views.login, methods=['GET', 'POST'])
 application.add_url_rule(r'/logout/', view_func=views.logout, methods=['GET', 'POST'])
 application.add_url_rule(r'/', view_func=views.index, methods=['GET', 'POST'])
 
+# register the API views
 application.register_blueprint(
     api_bp,
     url_prefix="/api/v1")
 
 
+# Run the main loop
 if __name__ == "__main__":
     application.run(host='0.0.0.0', debug=True)
