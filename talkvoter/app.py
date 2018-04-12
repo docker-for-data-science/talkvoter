@@ -37,7 +37,7 @@ def not_found(error):
 
 application.add_url_rule(r'/login/', view_func=views.login, methods=['GET', 'POST'])
 application.add_url_rule(r'/logout/', view_func=views.logout, methods=['GET', 'POST'])
-application.add_url_rule(r'/', view_func=views.dashboard, methods=['GET', 'POST'])
+application.add_url_rule(r'/', view_func=views.index, methods=['GET', 'POST'])
 
 application.register_blueprint(
     api_bp,

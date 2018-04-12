@@ -14,7 +14,7 @@ def login():
             flash('Invalid username or password')
             return redirect(url_for('login'))
         login_user(user, remember=True)
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('index'))
     return render_template('login.html', title='Sign In', form=form)
 
 
@@ -24,5 +24,5 @@ def logout():
 
 
 @login_required
-def dashboard():
-    return render_template('dashboard.html', title='Dashboard')
+def index():
+    return render_template('index.html', title='Dashboard')
