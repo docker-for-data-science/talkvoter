@@ -1,5 +1,6 @@
 from flask_restful import Resource, Api
 from flask_restful import reqparse
+from flask_login import login_required
 from flask import Blueprint, abort
 from sqlalchemy.sql.expression import func
 from marshmallow import ValidationError
@@ -21,6 +22,7 @@ def get_talk_or_abort(id):
 
 class TalksListResource(Resource):
 
+    @login_required
     def get(self):
         schema = TalkSchema()
         talk_objs = db.session.query(Talk)
@@ -33,6 +35,7 @@ api.add_resource(TalksListResource, '/talks/', endpoint="api.talks")
 
 class TalkDetailResource(Resource):
 
+    @login_required
     def get(self, id):
         schema = TalkSchema()
         talk_obj = get_talk_or_abort(id)
@@ -45,6 +48,7 @@ api.add_resource(TalkDetailResource, '/talks/<int:id>/', endpoint="api.talk")
 
 class TalkRandResource(Resource):
 
+    @login_required
     def get(self):
         schema = TalkSchema()
         talk_obj = db.session.query(Talk).order_by(func.random()).first()
@@ -70,9 +74,11 @@ class VoteResource(Resource):
         'vote', type=validate_vote_type,
         required=True, help='Must be in_person | watch_later')
 
+    @login_required
     def post(self, id):
         return self.get()
 
+    @login_required
     def get(self, id):
         talk_obj = get_talk_or_abort(id)
         args = self.parser.parse_args()
