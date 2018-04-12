@@ -41,7 +41,7 @@ down:
 	docker-compose down
 
 attach: ## Attach to app container
-	docker attach $(docker-compose ps -q app)
+	docker attach `docker-compose ps -q app`
 
 logs:
 	docker-compose logs -f app
