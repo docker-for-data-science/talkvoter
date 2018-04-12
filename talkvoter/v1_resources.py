@@ -78,11 +78,15 @@ class VoteResource(Resource):
         args = self.parser.parse_args()
         vote = args['vote']
 
+        vote_mapping = {
+            VoteValue.in_person.value: 1,
+            VoteValue.watch_later.value: 0, }
+
         schema = VoteSchema()
         msg = ""
         try:
             serial_obj = schema.load(
-                {'value': vote},
+                {'value': vote_mapping[vote]},
                 session=db.session)
         except ValidationError as err:
             err.messages
