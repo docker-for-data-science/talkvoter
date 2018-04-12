@@ -41,6 +41,7 @@ COPY docker-utils/ docker-utils/
 
 COPY . proj/
 
+WORKDIR ${SITE_DIR}proj/
 
 EXPOSE 8000
 CMD ["./docker-utils/run.sh"]
