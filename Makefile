@@ -46,14 +46,20 @@ attach: ## Attach to app container
 logs:
 	docker-compose logs -f app
 
+flask_shell: ## Shell into Flask process
+	docker-compose exec app python -m flask konch
+
 shell: ## Shell into app container
-	docker-compose exec -it app bash
+	docker-compose exec app bash
 
 dbshell: ## Shell into postgres process inside db container
 	docker-compose exec db psql -U postgres
 
-migrate: up
-	echo 'Need to add migrations'
+migrate: up ## Run migrations using flask migrate
+	docker-compose exec app python -m flask db upgrade
+
+migrate_back: up ## Rollback migrations using flask migrate
+	docker-compose exec app python -m flask db downgrade
 
 test: migrate
 	docker-compose exec app pytest

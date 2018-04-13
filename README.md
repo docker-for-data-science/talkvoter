@@ -13,6 +13,22 @@
 1. Install Docker
 1. Clone repo
 
+### Migrations
+
+#### Create
+
+```console
+make shell
+python -m flask db "migration message"
+```
+
+#### Run
+
+```console
+make migrate
+make migrate_back
+```
+
 ### Makefile Commands
 
 ```text

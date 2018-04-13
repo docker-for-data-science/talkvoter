@@ -2,6 +2,8 @@ from flask import Flask, render_template
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
+from flask_migrate import Migrate
+
 from .models import db, User, Talk, Vote
 from .v1_resources import api_bp
 from .config import Config
@@ -13,7 +15,7 @@ application.config.from_object(Config)
 
 # initialize and create the database
 db.init_app(application)
-db.create_all(app=application)
+migrate = Migrate(application, db)
 
 # Register models with the Admin
 admin = Admin(application, name='flask4data', template_mode='bootstrap3')
@@ -48,6 +50,15 @@ application.register_blueprint(
     api_bp,
     url_prefix="/api/v1")
 
+# set up flask konch (beefed up flask shell)
+application.config.update({
+    'KONCH_CONTEXT': {
+        'db': db,
+        'User': User,
+        'Talk': Talk,
+        'Vote': Vote,
+    }
+})
 
 # Run the main loop
 if __name__ == "__main__":

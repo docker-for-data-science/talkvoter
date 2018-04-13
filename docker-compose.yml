@@ -5,6 +5,7 @@ services:
      image: postgres:10-alpine
      ports:
        - "5432"
+       - "9432:5432"
      networks:
        - talkvoter_net
      volumes:
