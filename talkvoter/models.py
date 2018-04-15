@@ -36,6 +36,7 @@ class Talk(db.Model):
     presenters = db.Column(db.String)
 
     talk_dt = db.Column(db.DateTime)
+    year = db.Column(db.Integer)
     location = db.Column(db.String)
 
     date_created = db.Column(

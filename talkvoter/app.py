@@ -3,19 +3,31 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 from flask_migrate import Migrate
+import click
 
 from .models import db, User, Talk, Vote
 from .v1_resources import api_bp
 from .config import Config
+from .commands import load_talks_command
 from . import views
 
 
 application = Flask(__name__)
 application.config.from_object(Config)
 
-# initialize and create the database
+# ...# initialize and create the database
 db.init_app(application)
 migrate = Migrate(application, db)
+
+
+@application.cli.command()
+@click.option(
+    '--file', '-f', type=str, default='data/talks_db_dump.csv',
+    help='csv file containing talks.')
+def load_talks(file):
+    click.echo('\n Loading Talks File: {}'.format(file))
+    load_talks_command(file)
+
 
 # Register models with the Admin
 admin = Admin(application, name='flask4data', template_mode='bootstrap3')

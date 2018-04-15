@@ -50,6 +50,7 @@ Usage:
  make logs       see container logs
  make shell      connect to app container in new bash shell
  make dbshell    connect to postgres inside db container
+ make load_talks Load Talk data into Talks table from data/talks_db_dump.csv
 ```
 
 ## Overriding Default Docker-Compose Settings

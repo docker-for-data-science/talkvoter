@@ -1,3 +1,4 @@
+click
 Flask==0.12.2
 Flask-Admin==1.5.1
 flask-konch==1.2.0

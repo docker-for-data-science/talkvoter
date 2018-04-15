@@ -19,6 +19,7 @@ help:
 	@echo ' make logs       see container logs                          '
 	@echo ' make shell      connect to app container in new bash shell  '
 	@echo ' make dbshell    connect to postgres inside db container     '
+	@echo ' make load_talks Load talk data into Talks table             '
 	@echo '                                                             '
 
 build:
@@ -75,6 +76,10 @@ test_cov_view: migrate
 
 test_fast: ## Can pass in parameters using p=''
 	docker-compose exec app pytest $(p)
+
+load_talks: up
+	docker-compose exec app flask load_talks
+
 
 # Flake 8
 # options: http://flake8.pycqa.org/en/latest/user/options.html
