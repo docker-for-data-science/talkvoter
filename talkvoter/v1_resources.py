@@ -1,9 +1,11 @@
+import itertools
 from flask_restful import Resource, Api
 from flask_restful import reqparse
 from flask_login import login_required
 from flask import Blueprint, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func
+from sqlalchemy import distinct
 from marshmallow import ValidationError
 from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
@@ -121,3 +123,22 @@ class VoteResource(Resource):
 
 
 api.add_resource(VoteResource, '/talks/<int:id>/vote/', endpoint="api.vote")
+
+
+class PredictResource(Resource):
+
+    @login_required
+    def post(self):
+        return self.get()
+
+    @login_required
+    def get(self):
+        user = current_user
+        votes = list(itertools.chain(*db.session.query(Talk.id).join(Vote).filter(Vote.user == current_user)))
+        data = {'user_id': user.id, 'votes': votes}
+        msg = "{}".format(data)
+        ret_code = 200
+        return {"message": msg}, ret_code
+
+
+api.add_resource(PredictResource, '/predict/', endpoint="api.predict")

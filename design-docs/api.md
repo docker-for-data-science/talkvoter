@@ -112,3 +112,9 @@ Cast vote for `talk_id`
     "message": "Description of what happened"
 }
 ```
+
+
+### **POST** `/api/v1/predict/`
+
+- User id from session
+- should pass to backend {user_id: [list of votes in_person | watch_later]}
