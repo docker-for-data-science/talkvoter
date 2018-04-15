@@ -9,6 +9,7 @@ ENV DATABASE_URL=postgres://postgres@db/postgres
 # set an environment variable for a base directory for everything to live under
 ENV SITE_DIR=/app/
 ENV PYTHONPATH=${SITE_DIR}proj/:${PYTHONPATH}
+ENV PATH="/app/.local/bin/:${PATH}"
 ENV FLASK_APP="talkvoter.app"
 
 # add application user and group

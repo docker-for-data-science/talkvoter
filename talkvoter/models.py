@@ -35,6 +35,9 @@ class Talk(db.Model):
     description = db.Column(db.String)
     presenters = db.Column(db.String)
 
+    talk_dt = db.Column(db.DateTime)
+    location = db.Column(db.String)
+
     date_created = db.Column(
         db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(

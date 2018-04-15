@@ -19,7 +19,7 @@
 
 ```console
 make shell
-python -m flask db "migration message"
+python -m flask db migrate "migration message"
 ```
 
 #### Run

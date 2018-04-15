@@ -5,7 +5,6 @@ services:
      image: postgres:10-alpine
      ports:
        - "5432"
-       - "9432:5432"
      networks:
        - talkvoter_net
      volumes:
@@ -26,8 +25,6 @@ services:
      volumes:
        - .:/app/proj/
        - static-volume:/app/htdocs/static/
-     ports:
-       - "8000:8000"
      environment:
        - DATABASE_URL=postgres://postgres@db/postgres
        - SITE_DIR=/app/
