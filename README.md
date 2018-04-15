@@ -18,8 +18,7 @@
 #### Create
 
 ```console
-make shell
-python -m flask db migrate "migration message"
+make migration m='migration message'
 ```
 
 #### Run

@@ -47,7 +47,7 @@ logs:
 	docker-compose logs -f app
 
 flask_shell: ## Shell into Flask process
-	docker-compose exec app python -m flask konch
+	docker-compose exec app flask konch
 
 shell: ## Shell into app container
 	docker-compose exec app bash
@@ -55,11 +55,14 @@ shell: ## Shell into app container
 dbshell: ## Shell into postgres process inside db container
 	docker-compose exec db psql -U postgres
 
+migration: up ## Create migrations using flask migrate
+	docker-compose exec app flask db migrate -m "$(m)"
+
 migrate: up ## Run migrations using flask migrate
-	docker-compose exec app python -m flask db upgrade
+	docker-compose exec app flask db upgrade
 
 migrate_back: up ## Rollback migrations using flask migrate
-	docker-compose exec app python -m flask db downgrade
+	docker-compose exec app flask db downgrade
 
 test: migrate
 	docker-compose exec app pytest
