@@ -5,7 +5,7 @@ from flask import Blueprint, abort
 from flask_login import current_user
 from sqlalchemy.sql.expression import func
 from marshmallow import ValidationError
-from .models import db, Talk
+from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
 from .constants import VoteValue
 
@@ -87,6 +87,10 @@ class VoteResource(Resource):
         talk_obj = get_talk_or_abort(id)
         args = self.parser.parse_args()
         vote = args['vote']
+
+        if db.session.query(Vote).filter(
+                Vote.user == current_user, Vote.talk == talk_obj).count():
+            abort(404, 'user already voted for this talk')
 
         vote_mapping = {
             VoteValue.in_person.value: 1,
