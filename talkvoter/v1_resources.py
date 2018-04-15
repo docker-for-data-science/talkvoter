@@ -10,6 +10,8 @@ from .serializers import VoteSchema, TalkSchema
 from .constants import VoteValue
 
 
+PREVIOUS_YEAR = 2017
+
 api_bp = Blueprint('api_v1', __name__)
 api = Api(api_bp)
 
@@ -52,7 +54,8 @@ class TalkRandResource(Resource):
     @login_required
     def get(self):
         schema = TalkSchema()
-        talk_obj = db.session.query(Talk).order_by(func.random()).first()
+        talk_obj = db.session.query(Talk).filter(
+            Talk.year == PREVIOUS_YEAR).order_by(func.random()).first()
         if not talk_obj:
             abort(404, '`talk_id` is not in database')
         data = schema.dump(talk_obj).data
