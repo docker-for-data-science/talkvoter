@@ -60,12 +60,17 @@ class Vote(db.Model):
     talk = relationship("Talk", backref="votes")
     value = db.Column(db.Integer)  # 0=watch_later; 1=in_person
     processed = db.Column(db.Boolean, default=False)
+    user_id = db.Column(
+        db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     date_created = db.Column(
         db.DateTime, default=db.func.current_timestamp())
     date_modified = db.Column(
         db.DateTime, default=db.func.current_timestamp(),
         onupdate=db.func.current_timestamp())
+
+    # relationships
+    user = db.relationship('User', backref='votes')
 
     def __str__(self):
         return str(self.id)

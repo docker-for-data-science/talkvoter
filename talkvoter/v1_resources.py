@@ -2,6 +2,7 @@ from flask_restful import Resource, Api
 from flask_restful import reqparse
 from flask_login import login_required
 from flask import Blueprint, abort
+from flask_login import current_user
 from sqlalchemy.sql.expression import func
 from marshmallow import ValidationError
 from .models import db, Talk
@@ -104,6 +105,7 @@ class VoteResource(Resource):
         else:
             obj = serial_obj.data
             obj.talk = talk_obj
+            obj.user = current_user
             db.session.add(obj)
             db.session.commit()
             msg = "Success"
