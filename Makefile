@@ -57,13 +57,13 @@ dbshell: ## Shell into postgres process inside db container
 	docker-compose exec db psql -U postgres
 
 migration: up ## Create migrations using flask migrate
-	docker-compose exec app flask db migrate -m "$(m)"
+	docker-compose exec app flask db migrate -m "$(m)" --directory ./talkvoter/migrations/
 
 migrate: up ## Run migrations using flask migrate
-	docker-compose exec app flask db upgrade
+	docker-compose exec app flask db upgrade --directory ./talkvoter/migrations/
 
 migrate_back: up ## Rollback migrations using flask migrate
-	docker-compose exec app flask db downgrade
+	docker-compose exec app flask db downgrade --directory ./talkvoter/migrations/
 
 test: migrate
 	docker-compose exec app pytest

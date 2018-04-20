@@ -1,11 +1,10 @@
-import itertools
+import requests
 from flask_restful import Resource, Api
 from flask_restful import reqparse
 from flask_login import login_required
-from flask import Blueprint, abort
+from flask import Blueprint, abort, current_app
 from flask_login import current_user
 from sqlalchemy.sql.expression import func
-from sqlalchemy import distinct
 from marshmallow import ValidationError
 from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
@@ -133,11 +132,15 @@ class PredictResource(Resource):
 
     @login_required
     def get(self):
+        predict_host = current_app.config['PREDICT_HOST']
+        url = "http://{}/predict/".format(predict_host)
         user = current_user
-        votes = list(itertools.chain(*db.session.query(Talk.id).join(Vote).filter(Vote.user == current_user)))
+        votes = dict(
+            db.session.query(Talk.id, Vote.value).join(Vote).filter(Vote.user == current_user))
         data = {'user_id': user.id, 'votes': votes}
-        msg = "{}".format(data)
-        ret_code = 200
+        r = requests.post(url, json=data)
+        msg = r.text
+        ret_code = r.status_code
         return {"message": msg}, ret_code
 
 

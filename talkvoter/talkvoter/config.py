@@ -6,6 +6,8 @@ class Config(object):
 
     SECRET_KEY = os.getenv("SECRET_KEY")
 
+    PREDICT_HOST = os.getenv("PREDICT_HOST")
+
     SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///:memory:")
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False

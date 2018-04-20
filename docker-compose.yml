@@ -19,9 +19,9 @@ services:
    app:
      image: docker4data/talkvoter:prod-1.0.1
      build:
-       context: .
-       dockerfile: Dockerfile
-     command: /app/docker-utils/run.sh
+       context: ./
+       dockerfile: talkvoter/Dockerfile
+     command: /app/docker-utils/run-app.sh
      volumes:
        - .:/app/proj/
        - static-volume:/app/htdocs/static/
@@ -29,10 +29,35 @@ services:
        - DATABASE_URL=postgres://postgres@db/postgres
        - SITE_DIR=/app/
        - SECRET_KEY=super secret key
+       - PREDICT_HOST=predict:8000
      networks:
        - talkvoter_net
      depends_on:
        - db
+     stdin_open: true
+     tty: true
+     healthcheck:
+       test: ["CMD", "curl", "localhost", "8000"]
+       start_period: 5s
+       interval: 30s
+       timeout: 10s
+       retries: 3
+
+   predict:
+     image: docker4data/predict_api:prod-1.0.1
+     build:
+       context: ./
+       dockerfile: predict_api/Dockerfile
+     command: /app/docker-utils/run-predict.sh
+     volumes:
+       - .:/app/proj/
+       - static-volume:/app/htdocs/static/
+     environment:
+       - SITE_DIR=/app/
+     networks:
+       - talkvoter_net
+     depends_on:
+       - app
      stdin_open: true
      tty: true
      healthcheck:

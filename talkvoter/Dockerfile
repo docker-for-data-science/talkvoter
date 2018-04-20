@@ -8,7 +8,7 @@ ENV DATABASE_URL=postgres://postgres@db/postgres
 
 # set an environment variable for a base directory for everything to live under
 ENV SITE_DIR=/app/
-ENV PYTHONPATH=${SITE_DIR}proj/:${PYTHONPATH}
+ENV PYTHONPATH=${SITE_DIR}proj/talkvoter/:${PYTHONPATH}
 ENV PATH="/app/.local/bin/:${PATH}"
 ENV FLASK_APP="talkvoter.app"
 
@@ -28,15 +28,15 @@ RUN find ${SITE_DIR} -type d -exec chmod g+s {} \;
 RUN chmod -R g+w ${SITE_DIR}
 
 # upgrade pip
-RUN pip install pip==9.0.3
+RUN pip install pip==10.0.0
 
 # from here on, run everything as the "app" user
 USER app
 
 RUN pip install --user uwsgi
 
-COPY requirements.txt requirements.txt
-RUN pip install --user -r requirements.txt
+COPY talkvoter/requirements.txt requirements.txt
+RUN pip install --no-cache-dir --user -r requirements.txt
 
 COPY docker-utils/ docker-utils/
 
@@ -45,5 +45,5 @@ COPY . proj/
 WORKDIR ${SITE_DIR}proj/
 
 EXPOSE 8000
-CMD ["./docker-utils/run.sh"]
-ENTRYPOINT ["./docker-utils/entrypoint.sh"]
+CMD ["./docker-utils/run-app.sh"]
+ENTRYPOINT ["./docker-utils/entrypoint-app.sh"]
