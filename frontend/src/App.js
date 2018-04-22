@@ -17,10 +17,11 @@ class App extends React.Component {
     /*
     Hit Flask endpoint to get talk from last year that user has not voted on
     */
-    fetch('http://app:8000/api/v1/talks/random/', {method: 'GET'})
-    .then(function(response) {
-      response.json()
-    })
+    fetch('/api/v1/talks/random/', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json'},
+      credentials: "same-origin",
+    }).then(response => response.json())
     .then(data => this.setState({
       result: data,
       talk_id: data['id'],
@@ -45,13 +46,17 @@ class App extends React.Component {
 
     let that = this;  // this trick never fails :D
 
-    fetch('http://app:8000/api/v1/talks/' + this.state.talk_id + '/vote/', {
+    fetch('/api/v1/talks/' + this.state.talk_id + '/vote/', {
         method: 'POST',
         body: JSON.stringify(body_),
         headers: {'Content-Type': 'application/json'},
+        credentials: "same-origin",
     }).then(function(response) {
       if (response.status === 200) {
         that.fetchRandomTalk();
+      } else if (response.status === 404) {
+        // TODO: voted on all talks, go to predict
+        console.log('Voted on all talks, time to predict')
       }
     });
   }
@@ -69,16 +74,8 @@ class App extends React.Component {
                 <CardText>{this.state.result['description']}</CardText>
               </CardBody>
               <CardFooter>
-                <Row>
-                  <Col>
-                    <Button color="danger" onClick={(e) => this.vote(e, 'no')}>Watch Later</Button>
-                  </Col>
-                  <Col></Col>
-                  <Col></Col>
-                  <Col>
-                    <Button color="success" onClick={(e) => this.vote(e, 'yes')}>In Person</Button>
-                  </Col>
-                </Row>
+                <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>Watch Later</Button>
+                <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>In Person</Button>
               </CardFooter>
             </Card>
           </Col>

@@ -4,8 +4,10 @@ from flask_restful import reqparse
 from flask_login import login_required
 from flask import Blueprint, abort, current_app
 from flask_login import current_user
+from sqlalchemy import and_
 from sqlalchemy.sql.expression import func
 from marshmallow import ValidationError
+
 from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
 from .constants import VoteValue
@@ -54,11 +56,18 @@ class TalkRandResource(Resource):
 
     @login_required
     def get(self):
+        talks_user_voted_on = [talk.talk_id for talk in current_user.votes]
+
         schema = TalkSchema()
-        talk_obj = db.session.query(Talk).filter(
-            Talk.year == PREVIOUS_YEAR).order_by(func.random()).first()
+        talk_obj = (db.session
+                      .query(Talk)
+                      .filter(and_(Talk.year == PREVIOUS_YEAR, ~Talk.id.in_(talks_user_voted_on)))
+                      .order_by(func.random())
+                      .first())
+
         if not talk_obj:
             abort(404, '`talk_id` is not in database')
+
         data = schema.dump(talk_obj).data
         return data, 200
 
@@ -81,17 +90,12 @@ class VoteResource(Resource):
 
     @login_required
     def post(self, id):
-        return self.get()
-
-    @login_required
-    def get(self, id):
         talk_obj = get_talk_or_abort(id)
         args = self.parser.parse_args()
         vote = args['vote']
 
-        if db.session.query(Vote).filter(
-                Vote.user == current_user, Vote.talk == talk_obj).count():
-            abort(404, 'user already voted for this talk')
+        if db.session.query(Vote).filter(Vote.user == current_user, Vote.talk == talk_obj).count():
+            abort(409, 'user already voted for this talk')
 
         vote_mapping = {
             VoteValue.in_person.value: 1,
