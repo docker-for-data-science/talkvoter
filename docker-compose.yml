@@ -1,21 +1,6 @@
 version: '3.4'
 services:
 
-   db:
-     image: postgres:10-alpine
-     ports:
-       - "5432"
-     networks:
-       - talkvoter_net
-     volumes:
-       - pgdata:/var/lib/postgresql/data/
-     healthcheck:
-       test: ["CMD", "pg_isready", "-U", "postgres"]
-       start_period: 5s
-       interval: 30s
-       timeout: 10s
-       retries: 3
-
    app:
      image: docker4data/talkvoter:prod-1.0.1
      build:
@@ -62,6 +47,21 @@ services:
      tty: true
      healthcheck:
        test: ["CMD", "curl", "localhost", "8000"]
+       start_period: 5s
+       interval: 30s
+       timeout: 10s
+       retries: 3
+
+   db:
+     image: postgres:10-alpine
+     ports:
+       - "5432"
+     networks:
+       - talkvoter_net
+     volumes:
+       - pgdata:/var/lib/postgresql/data/
+     healthcheck:
+       test: ["CMD", "pg_isready", "-U", "postgres"]
        start_period: 5s
        interval: 30s
        timeout: 10s
