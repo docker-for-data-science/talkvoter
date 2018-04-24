@@ -80,6 +80,9 @@ test_fast: ## Can pass in parameters using p=''
 load_talks: up
 	docker-compose exec app flask load_talks
 
+superuser: up
+	docker-compose exec app flask createsuperuser $(username) $(password)
+
 
 # Flake 8
 # options: http://flake8.pycqa.org/en/latest/user/options.html

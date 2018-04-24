@@ -24,8 +24,10 @@ make migration m='migration message'
 #### Run
 
 ```console
+make up
 make migrate
-make migrate_back
+make load_talks
+make superuser username=myuser password=insecure
 ```
 
 ### Makefile Commands
@@ -41,6 +43,7 @@ Usage:
  make down       stops service and removes containers
 
  make migrate    run migrations
+ make migrate_back  run reverse migrations
  make test       run tests
  make test_cov   run tests with coverage.py
  make test_fast  run tests without migrations
@@ -51,6 +54,7 @@ Usage:
  make shell      connect to app container in new bash shell
  make dbshell    connect to postgres inside db container
  make load_talks Load Talk data into Talks table from data/talks_db_dump.csv
+ make superuser username=myuser password=insecure
 ```
 
 ## Overriding Default Docker-Compose Settings
