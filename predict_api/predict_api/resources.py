@@ -1,5 +1,5 @@
 from flask_restful import Resource, Api
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request
 
 
 api_bp = Blueprint('api_v1', __name__)

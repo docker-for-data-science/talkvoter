@@ -10,7 +10,7 @@ from marshmallow import ValidationError
 
 from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
-from .constants import VoteValue
+from .constants import VoteValue, vote_mapping
 
 
 PREVIOUS_YEAR = 2017
@@ -97,10 +97,6 @@ class VoteResource(Resource):
         if db.session.query(Vote).filter(Vote.user == current_user, Vote.talk == talk_obj).count():
             abort(409, 'user already voted for this talk')
 
-        vote_mapping = {
-            VoteValue.in_person.value: 1,
-            VoteValue.watch_later.value: 0, }
-
         schema = VoteSchema()
         msg = ""
         try:
@@ -140,7 +136,10 @@ class PredictResource(Resource):
         url = "http://{}/predict/".format(predict_host)
         user = current_user
         votes = dict(
-            db.session.query(Talk.id, Vote.value).join(Vote).filter(Vote.user == current_user))
+            db.session.query(
+                Talk.id, Vote.value).join(Vote).filter(
+                    Vote.value == vote_mapping[VoteValue.in_person.value],
+                    Vote.user == current_user))
         data = {'user_id': user.id, 'votes': votes}
         r = requests.post(url, json=data)
         msg = r.text
