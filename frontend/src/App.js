@@ -1,86 +1,71 @@
-import React from 'react';
-import { Card, CardBody, CardFooter, CardTitle, CardSubtitle, CardText} from 'reactstrap';
-import { Container, Row, Col } from 'reactstrap';
-import { Button } from 'reactstrap';
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import {
+  Container, Row, Col,
+  Navbar, NavbarBrand, Nav,
+  UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+import VoteCard from './components/VoteCard';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-        result: {},
-        talk_id: null,
-    };
-    this.fetchRandomTalk()
-  }
+import './App.css';
 
-  fetchRandomTalk() {
-    /*
-    Hit Flask endpoint to get talk from last year that user has not voted on
-    */
-    fetch('/api/v1/talks/random/', {
-      method: 'GET',
-      headers: {'Content-Type': 'application/json'},
-      credentials: "same-origin",
-    }).then(response => response.json())
-    .then(data => this.setState({
-      result: data,
-      talk_id: data['id'],
-    }));
-  }
-
-  vote(event, vote_type) {
-    /*
-    Process vote user vote and load next talk
-    */
-    event.preventDefault();
-
-    let body_ = {
-      "vote": null
-    };
-
-    if (vote_type === 'yes') {
-      body_['vote'] = 'in_person'
-    } else {
-      body_['vote'] = 'watch_later'
-    }
-
-    let that = this;  // this trick never fails :D
-
-    fetch('/api/v1/talks/' + this.state.talk_id + '/vote/', {
-        method: 'POST',
-        body: JSON.stringify(body_),
-        headers: {'Content-Type': 'application/json'},
-        credentials: "same-origin",
-    }).then(function(response) {
-      if (response.status === 200) {
-        that.fetchRandomTalk();
-      } else if (response.status === 404) {
-        // TODO: voted on all talks, go to predict
-        console.log('Voted on all talks, time to predict')
-      }
-    });
-  }
-
+class Foo extends Component {
   render() {
     return (
-      <Container>
-        <Row>
-          <Col>
-            <Card>
-              <CardBody>
-                <CardTitle tag="h3" className="text-center">{this.state.result['title']}</CardTitle>
-                <CardSubtitle className="text-center"><small>Presented by: {this.state.result['presenters']}</small></CardSubtitle>
-                <br />
-                <CardText>{this.state.result['description']}</CardText>
-              </CardBody>
-              <CardFooter>
-                <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>Watch Later</Button>
-                <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>In Person</Button>
-              </CardFooter>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+      <div>
+        <h2>Page Foo</h2>
+      </div>
+    );
+  }
+}
+
+const NavigationBar = () => (
+  <Navbar color="dark" dark expand="md">
+    <NavbarBrand className="mx-auto" href="/">
+      <div className="navbar-title">Talk Recommender</div>
+    </NavbarBrand>
+
+    <Nav navbar>
+      <UncontrolledDropdown nav inNavbar>
+        <DropdownToggle nav caret></DropdownToggle>
+        <DropdownMenu right>
+          <DropdownItem tag={Link} to="/">Vote</DropdownItem>
+          <DropdownItem tag={Link} to="/predict">Predict</DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem href="/login">Login</DropdownItem>
+          <DropdownItem href="/logout">Logout</DropdownItem>
+        </DropdownMenu>
+      </UncontrolledDropdown>
+    </Nav>
+  </Navbar>
+)
+
+const Content = () => (
+  <Container>
+    <Row>
+      <Col>
+        <Switch>
+          <Route exact path="/" component={VoteCard} />
+          <Route path="/predict" component={Foo} />
+        </Switch>
+      </Col>
+    </Row>
+  </Container>
+)
+
+const Layout = () => (
+  <Router>
+    <div>
+      <NavigationBar />
+      <br />
+      <Content />
+    </div>
+  </Router>
+)
+
+class App extends Component {
+  render() {
+    return (
+      <Layout />
     );
   }
 }
