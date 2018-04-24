@@ -1,5 +1,5 @@
 import csv
-from .models import db, Talk
+from .models import db, Talk, User
 from datetime import datetime
 
 
@@ -21,3 +21,10 @@ def load_talks_command(file):
             )
             db.session.merge(t, load=True)
             db.session.commit()
+
+
+def createsuperuser_command(username, password):
+    u = User(username=username)
+    u.set_password(password)
+    db.session.merge(u, load=True)
+    db.session.commit()

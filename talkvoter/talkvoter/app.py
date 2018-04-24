@@ -1,6 +1,5 @@
 from flask import Flask, render_template
 from flask_admin import Admin
-from flask_admin.contrib.sqla import ModelView
 from flask_login import LoginManager
 from flask_migrate import Migrate
 import click
@@ -8,7 +7,9 @@ import click
 from .models import db, User, Talk, Vote
 from .v1_resources import api_bp
 from .config import Config
-from .commands import load_talks_command
+from .admin import AuthModelView
+from .commands import (
+    load_talks_command, createsuperuser_command)
 from . import views
 
 
@@ -29,11 +30,19 @@ def load_talks(file):
     load_talks_command(file)
 
 
+@application.cli.command()
+@click.argument('name', nargs=1)
+@click.argument('password', nargs=1)
+def createsuperuser(name, password):
+    click.echo('\n create superuser: {}'.format(name))
+    createsuperuser_command(name, password)
+
+
 # Register models with the Admin
 admin = Admin(application, name='flask4data', template_mode='bootstrap3')
-admin.add_view(ModelView(User, db.session))
-admin.add_view(ModelView(Talk, db.session))
-admin.add_view(ModelView(Vote, db.session))
+admin.add_view(AuthModelView(User, db.session))
+admin.add_view(AuthModelView(Talk, db.session))
+admin.add_view(AuthModelView(Vote, db.session))
 
 # Instantiate the Flask Login manager
 login = LoginManager(application)
