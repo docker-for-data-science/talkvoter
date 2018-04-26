@@ -41,6 +41,8 @@ stop:
 down:
 	docker-compose down
 
+rebuild: down build up
+
 attach: ## Attach to app container
 	docker attach `docker-compose ps -q app`
 

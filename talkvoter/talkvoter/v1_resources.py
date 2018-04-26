@@ -135,12 +135,11 @@ class PredictResource(Resource):
         predict_host = current_app.config['PREDICT_HOST']
         url = "http://{}/predict/".format(predict_host)
         user = current_user
-        votes = dict(
-            db.session.query(
-                Talk.id, Vote.value).join(Vote).filter(
-                    Vote.value == vote_mapping[VoteValue.in_person.value],
-                    Vote.user == current_user))
-        data = {'user_id': user.id, 'votes': votes}
+        votes = [talk_id for talk_id, in db.session.query(Talk.id).join(Vote).filter(
+            Vote.value == vote_mapping[VoteValue.in_person.value],
+            Vote.user == current_user).all()]
+        current_app.logger.debug(f'{user.id}: {votes}')
+        data = {'user_id': user.id, 'labeled_talk_ids': votes}
         r = requests.post(url, json=data)
         msg = r.text
         ret_code = r.status_code

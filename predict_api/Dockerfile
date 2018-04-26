@@ -6,6 +6,7 @@ ENV SITE_DIR=/app/
 ENV PYTHONPATH=${SITE_DIR}proj/predict_api/:${PYTHONPATH}
 ENV PATH="/app/.local/bin/:${PATH}"
 ENV FLASK_APP="predict_api.app"
+ENV DATABASE_URL=postgres://postgres@db/postgres
 
 # add application user and group
 RUN groupadd -r app && \
