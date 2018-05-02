@@ -56,7 +56,8 @@ class ModelWrapper:
 
     def train(self, user_id, labeled_talk_ids):
         labels = np.zeros(self.count_labeled)
-        labels[labeled_talk_ids] = 1
+        indexes = [x-1 for x in labeled_talk_ids]
+        labels[indexes] = 1
 
         X_train, X_test, y_train, y_test = train_test_split(
             self.vectorized_text_labeled, labels, test_size=self.count_labeled // 3)
@@ -75,13 +76,14 @@ class ModelWrapper:
     def predict(self, user_id, labeled_talk_ids):
         classifier = None
         if self.user_model_dict:
-            classifier = self.user_model_dict.get(user_id)
-        if classifier is None:
+            classifier, prev_labeled_talk_ids = self.user_model_dict.get(user_id, (None, []))
+        if classifier is None or prev_labeled_talk_ids != labeled_talk_ids:
             classifier = self.train(user_id, labeled_talk_ids)
-            self.user_model_dict[user_id] = classifier
+            self.user_model_dict[user_id] = classifier, labeled_talk_ids
             self._pickle_model()
 
         predicted_talks_vector = classifier.predict(self.vectorized_text_predict)
         df = talks_df_from_db(year=2018)
         predicted_talks_indexes = np.array(predicted_talks_vector).nonzero()[0].tolist()
-        return df.loc[predicted_talks_indexes]['id'].tolist()
+        print(len(predicted_talks_indexes))
+        return df.loc[predicted_talks_indexes][['id', 'description', 'presenters', 'title', 'location']].to_dict('records')

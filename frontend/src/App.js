@@ -4,19 +4,12 @@ import {
   Container, Row, Col,
   Navbar, NavbarBrand, Nav,
   UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+
 import VoteCard from './components/VoteCard';
+import RecommendationList from './components/RecommendationList';
 
 import './App.css';
 
-class Foo extends Component {
-  render() {
-    return (
-      <div>
-        <h2>Page Foo</h2>
-      </div>
-    );
-  }
-}
 
 const NavigationBar = () => (
   <Navbar color="dark" dark expand="md">
@@ -29,7 +22,7 @@ const NavigationBar = () => (
         <DropdownToggle nav caret></DropdownToggle>
         <DropdownMenu right>
           <DropdownItem tag={Link} to="/">Vote</DropdownItem>
-          <DropdownItem tag={Link} to="/predict">Predict</DropdownItem>
+          <DropdownItem tag={Link} to="/recommendations">Recommendations</DropdownItem>
           <DropdownItem divider />
           <DropdownItem href="/login">Login</DropdownItem>
           <DropdownItem href="/logout">Logout</DropdownItem>
@@ -45,7 +38,7 @@ const Content = () => (
       <Col>
         <Switch>
           <Route exact path="/" component={VoteCard} />
-          <Route path="/predict" component={Foo} />
+          <Route path="/recommendations" component={RecommendationList} />
         </Switch>
       </Col>
     </Row>

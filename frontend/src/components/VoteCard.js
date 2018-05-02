@@ -10,7 +10,7 @@ class VoteCard extends Component {
         result: {},
         talk_id: null,
     };
-    this.fetchRandomTalk()
+    this.fetchRandomTalk();
   }
 
   fetchRandomTalk() {
@@ -21,7 +21,8 @@ class VoteCard extends Component {
       method: 'GET',
       headers: {'Content-Type': 'application/json'},
       credentials: "same-origin",
-    }).then(response => response.json())
+    })
+    .then(response => response.json())
     .then(data => this.setState({
       result: data,
       talk_id: data['id'],
@@ -51,7 +52,8 @@ class VoteCard extends Component {
         body: JSON.stringify(body_),
         headers: {'Content-Type': 'application/json'},
         credentials: "same-origin",
-    }).then(function(response) {
+    })
+    .then(function(response) {
       if (response.status === 200) {
         that.fetchRandomTalk();
       } else if (response.status === 404) {
@@ -66,13 +68,19 @@ class VoteCard extends Component {
       <Card>
         <CardBody>
           <CardTitle tag="h3" className="text-center">{this.state.result['title']}</CardTitle>
-          <CardSubtitle className="text-center"><small>Presented by: {this.state.result['presenters']}</small></CardSubtitle>
+          <CardSubtitle className="text-center">
+            <small>Presented by: {this.state.result['presenters']}</small>
+          </CardSubtitle>
           <br />
           <CardText>{this.state.result['description']}</CardText>
         </CardBody>
         <CardFooter>
-          <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>Watch Later</Button>
-          <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>In Person</Button>
+          <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>
+            Watch Later
+          </Button>
+          <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>
+            In Person
+          </Button>
         </CardFooter>
       </Card>
     );

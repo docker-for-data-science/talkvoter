@@ -11,7 +11,7 @@ from marshmallow import ValidationError
 from .models import db, Talk, Vote
 from .serializers import VoteSchema, TalkSchema
 from .constants import VoteValue, vote_mapping
-
+import json
 
 PREVIOUS_YEAR = 2017
 
@@ -132,18 +132,23 @@ class PredictResource(Resource):
 
     @login_required
     def get(self):
-        predict_host = current_app.config['PREDICT_HOST']
-        url = "http://{}/predict/".format(predict_host)
         user = current_user
-        votes = [talk_id for talk_id, in db.session.query(Talk.id).join(Vote).filter(
-            Vote.value == vote_mapping[VoteValue.in_person.value],
-            Vote.user == current_user).all()]
+        votes = [talk_id
+                 for talk_id,
+                 in (db.session
+                       .query(Talk.id)
+                       .join(Vote)
+                       .filter(Vote.value == vote_mapping[VoteValue.in_person.value],
+                               Vote.user == current_user).all())]
         current_app.logger.debug(f'{user.id}: {votes}')
         data = {'user_id': user.id, 'labeled_talk_ids': votes}
-        r = requests.post(url, json=data)
-        msg = r.text
+
+        predict_url = current_app.config['PREDICT_ENDPOINT']
+        r = requests.post(predict_url, json=data)
+
+        data = json.loads(r.text)
         ret_code = r.status_code
-        return {"message": msg}, ret_code
+        return data, ret_code
 
 
 api.add_resource(PredictResource, '/predict/', endpoint="api.predict")

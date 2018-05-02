@@ -25,11 +25,10 @@ class PredictResource(Resource):
 
     def get(self):
         content = request.json
-        predicted_talk_ids = mw.predict(content['user_id'], content['labeled_talk_ids'])
+        predicted_talks = mw.predict(content['user_id'], content['labeled_talk_ids'])
         ret_code = 200
         # TODO error handling
-        current_app.logger.debug(f'{predicted_talk_ids }')
-        return {"predicted_talk_ids": predicted_talk_ids}, ret_code
+        return {"predicted_talks": predicted_talks}, ret_code
 
 
 api.add_resource(PredictResource, '/predict/', endpoint="api.predict")
