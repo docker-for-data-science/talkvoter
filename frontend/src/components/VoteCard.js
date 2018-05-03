@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Card, CardBody, CardFooter, CardTitle, CardSubtitle, CardText,
+  Card, CardHeader, CardBody, CardTitle, CardSubtitle, CardText,
   Button } from 'reactstrap';
 
 class VoteCard extends Component {
@@ -66,6 +66,14 @@ class VoteCard extends Component {
   render() {
     return (
       <Card>
+        <CardHeader>
+          <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>
+            Watch Later
+          </Button>
+          <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>
+            In Person
+          </Button>
+        </CardHeader>
         <CardBody>
           <CardTitle tag="h3" className="text-center">{this.state.result['title']}</CardTitle>
           <CardSubtitle className="text-center">
@@ -74,14 +82,6 @@ class VoteCard extends Component {
           <br />
           <CardText>{this.state.result['description']}</CardText>
         </CardBody>
-        <CardFooter>
-          <Button color="danger" className="float-left" onClick={(e) => this.vote(e, 'no')}>
-            Watch Later
-          </Button>
-          <Button color="success" className="float-right" onClick={(e) => this.vote(e, 'yes')}>
-            In Person
-          </Button>
-        </CardFooter>
       </Card>
     );
   }

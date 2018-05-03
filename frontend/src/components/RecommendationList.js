@@ -28,12 +28,12 @@ class RecommendationList extends Component {
     if (talks.length == 0)
         return <h3>Not enough talks were selected. Please label some <a href="/">more</a>.</h3>
     return (
-      talks.map( talk => 
+      talks.map( talk =>
       <Card>
         <CardBody>
           <CardTitle tag="h3" className="text-center">{talk['title']}</CardTitle>
           <CardSubtitle className="text-center">
-            <small>Presented by: {talk['presenters']}</small>
+            <small>Presented by: {talk['presenters']}</small><br />
             <small>Location: {talk['location']}</small>
           </CardSubtitle>
           <br />
