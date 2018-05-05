@@ -15,8 +15,6 @@ services:
        - SITE_DIR=/app/
        - SECRET_KEY=super secret key
        - PREDICT_ENDPOINT=http://predict:8000/predict/
-     networks:
-       - talkvoter_net
      depends_on:
        - db
 
@@ -31,20 +29,14 @@ services:
        - static-volume:/app/htdocs/static/
      environment:
        - SITE_DIR=/app/
-     networks:
-       - talkvoter_net
      depends_on:
        - app
 
    db:
      image: postgres:10-alpine
-     networks:
-       - talkvoter_net
      volumes:
        - pgdata:/var/lib/postgresql/data/
 
-networks:
-  talkvoter_net:
 
 volumes:
   static-volume:
