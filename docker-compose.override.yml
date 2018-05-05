@@ -8,5 +8,3 @@ services:
    app:
      ports:
        - "8000:8000"
-     volumes:
-       - ./.pdbrc.py:/home/sivpack/.pdbrc.py

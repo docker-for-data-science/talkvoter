@@ -19,14 +19,6 @@ services:
        - talkvoter_net
      depends_on:
        - db
-     stdin_open: true
-     tty: true
-     healthcheck:
-       test: ["CMD", "curl", "localhost", "8000"]
-       start_period: 5s
-       interval: 30s
-       timeout: 10s
-       retries: 3
 
    predict:
      image: docker4data/predict_api:prod-1.0.1
@@ -43,29 +35,13 @@ services:
        - talkvoter_net
      depends_on:
        - app
-     stdin_open: true
-     tty: true
-     healthcheck:
-       test: ["CMD", "curl", "localhost", "8000"]
-       start_period: 5s
-       interval: 30s
-       timeout: 10s
-       retries: 3
 
    db:
      image: postgres:10-alpine
-     ports:
-       - "5432"
      networks:
        - talkvoter_net
      volumes:
        - pgdata:/var/lib/postgresql/data/
-     healthcheck:
-       test: ["CMD", "pg_isready", "-U", "postgres"]
-       start_period: 5s
-       interval: 30s
-       timeout: 10s
-       retries: 3
 
 networks:
   talkvoter_net:
