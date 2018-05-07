@@ -10,3 +10,4 @@ six==1.11.0
 sklearn==0.0
 psycopg2-binary==2.7.4
 SQLAlchemy==1.2.6
+spacy==2.0.11
