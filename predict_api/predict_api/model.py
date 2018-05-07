@@ -23,7 +23,7 @@ def talks_df_from_db(year=None):
 
 
 def vectorize_talk_text(text_df):
-    vectorizer = TfidfVectorizer(ngram_range=(1, 2))  # TODO add nltk feature engg
+    vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words="english")
     return vectorizer.fit_transform(text_df)
 
 
