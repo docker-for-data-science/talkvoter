@@ -55,9 +55,9 @@ class ModelWrapper:
             print('No model yet')
 
     def train(self, user_id, labeled_talk_ids):
-        labels = np.zeros(self.count_labeled)
+        labels = np.ones(self.count_labeled)
         indexes = [x-1 for x in labeled_talk_ids]
-        labels[indexes] = 1
+        labels[indexes] = 0
 
         X_train, X_test, y_train, y_test = train_test_split(
             self.vectorized_text_labeled, labels, test_size=self.count_labeled // 3)

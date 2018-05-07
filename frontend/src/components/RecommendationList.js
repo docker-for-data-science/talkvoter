@@ -23,12 +23,9 @@ class RecommendationList extends Component {
     .then(response => this.setState({talks : response['predicted_talks']}));
   }
 
-  render() {
-    let talks = this.state.talks;
-    if (talks.length == 0)
-        return <h3>Not enough talks were selected. Please label some <a href="/">more</a>.</h3>
+  renderCard(talks){
     return (
-      talks.map( talk =>
+    talks.map( talk =>
       <Card>
         <CardBody>
           <CardTitle tag="h3" className="text-center">{talk['title']}</CardTitle>
@@ -42,6 +39,25 @@ class RecommendationList extends Component {
       </Card>
       )
     );
+  }
+
+  render() {
+    let talks = this.state.talks;
+    if (talks !==undefined && talks.length == 95){
+      return (
+      <div>
+        <h3>Looks like you don't like missing out anything! Please <a href="/">filter some more to watch later!</a></h3>
+        { this.renderCard(talks) }
+      </div>
+      );
+    } else {
+      return(
+      <div>
+      <h3>Found {talks.length} talks to watch in person. Try <a href="/">filtering more</a> if you want better results.</h3>
+        { this.renderCard(talks) }
+      </div>
+      );
+    }
   }
 }
 

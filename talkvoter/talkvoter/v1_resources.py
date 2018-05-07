@@ -138,7 +138,7 @@ class PredictResource(Resource):
                  in (db.session
                        .query(Talk.id)
                        .join(Vote)
-                       .filter(Vote.value == vote_mapping[VoteValue.in_person.value],
+                       .filter(Vote.value == vote_mapping[VoteValue.watch_later.value],
                                Vote.user == current_user).all())]
         current_app.logger.debug(f'{user.id}: {votes}')
         data = {'user_id': user.id, 'labeled_talk_ids': votes}
